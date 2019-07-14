@@ -1,0 +1,9 @@
+App\Model\Request\UserInput:
+    properties:
+        username:
+          - NotNull: ~
+        password:
+          - NotNull: ~
+        email:
+          - NotNull: ~
+          - Email: ~
