@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Request\Token;
-
-use App\Model\Request\InputModelInterface;
+namespace App\Model\Request;
 
 class TokenInput implements InputModelInterface
 {

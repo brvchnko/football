@@ -68,11 +68,11 @@ class TokenUtil
     {
         $tokenData = $this->getTokenData($token);
 
-        if ($tokenData->meta->token_expiry < time()) {
+        if ($tokenData->meta->expiry < time()) {
             throw new TokenException();
         }
 
-        $this->isTokenInCache($tokenData->user->id, $tokenData->meta->token_id);
+        $this->isTokenInCache($tokenData->user->id, $tokenData->meta->id);
 
         return $tokenData;
     }

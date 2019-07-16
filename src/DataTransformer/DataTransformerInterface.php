@@ -12,12 +12,12 @@ interface DataTransformerInterface
      *
      * @return mixed
      */
-    public function transform($source, $entity = null);
+    public function transformToEntity($source, $entity = null);
 
     /**
      * @param mixed $source
      *
      * @return mixed
      */
-    public function reverseTransform($source);
+    public function transformToModel($source);
 }

@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Exceptions\TokenException;
-use App\Model\Request\Token\TokenInput;
+use App\Model\Request\TokenInput;
 use App\Repository\UserRepository;
 use App\Util\TokenUtil;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;

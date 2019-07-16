@@ -4,29 +4,27 @@ declare(strict_types=1);
 
 namespace App\Factory;
 
-use App\Model\Token as Token;
+use App\Model\Token as TokenModel;
 use App\Entity\User;
 
 class TokenFactory
 {
-    public function create(User $user, string $tokenId, int $tokenExpiry): Token\Data
+    public function create(User $user, string $tokenId, int $tokenExpiry): TokenModel\Data
     {
-        $dataModel = new Token\Data();
-        $metaModel = new Token\Meta();
-        $userModel = new Token\User();
+        $dataModel = new TokenModel\Data();
 
-        $metaModel
-            ->setId($tokenId)
-            ->setTokenExpireTime($tokenExpiry);
+        $metaModel = new TokenModel\Meta();
+        $metaModel->id = $tokenId;
+        $metaModel->expiry = $tokenExpiry;
 
-        $dataModel->setMeta($metaModel);
+        $dataModel->meta = $metaModel;
 
-        $userModel
-            ->setId($user->getId())
-            ->setEmail($user->getEmail())
-            ->setRoles($user->getRoles());
+        $userModel = new TokenModel\User();
+        $userModel->id = $user->getId();
+        $userModel->email = $user->getEmail();
+        $userModel->roles = $user->getRoles();
 
-        $dataModel->setUser($userModel);
+        $dataModel->user = $userModel;
 
         return $dataModel;
     }
