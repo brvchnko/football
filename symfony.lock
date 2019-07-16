@@ -81,6 +81,9 @@
     "egulias/email-validator": {
         "version": "2.1.9"
     },
+    "firebase/php-jwt": {
+        "version": "v5.0.0"
+    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
     },
@@ -92,6 +95,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.2"
+    },
+    "predis/predis": {
+        "version": "v1.1.1"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -112,6 +118,18 @@
         },
         "files": [
             "config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "snc/redis-bundle": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "e9c58bfc414cfb7f06e8e5ae9f589868498f5d6a"
+        },
+        "files": [
+            "config/packages/snc_redis.yaml"
         ]
     },
     "swiftmailer/swiftmailer": {

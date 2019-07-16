@@ -1,0 +1,8 @@
+snc_redis:
+    clients:
+        token:
+            type: predis
+            alias: token
+            dsn: '%redis_host%'
+            options:
+                prefix: "token:"
