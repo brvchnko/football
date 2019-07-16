@@ -6,17 +6,11 @@ namespace App\Tests\DataTransformer;
 
 use App\DataTransformer\LeagueDataTransformer;
 use App\DataTransformer\TeamDataTransformer;
-use App\Entity\League;
 use App\Entity\Team;
-use App\Model\Request\LeagueInput;
 use App\Model\Request\TeamInput;
-use App\Model\Response\LeagueOutput;
 use App\Model\Response\TeamOutput;
-use App\Tests\DataFixtures\Entity\LeagueData;
 use App\Tests\DataFixtures\Entity\TeamData;
-use App\Tests\DataFixtures\Model\Request\LeagueInputData;
 use App\Tests\DataFixtures\Model\Request\TeamInputData;
-use App\Tests\DataFixtures\Model\Response\LeagueOutputData;
 use App\Tests\DataFixtures\Model\Response\TeamOutputData;
 use PHPUnit\Framework\TestCase;
 
@@ -36,10 +30,12 @@ class TeamDataTransformerTest extends TestCase
     /**
      * @dataProvider entityProvider
      *
-     * @param Team $entity
+     * @param Team      $entity
      * @param TeamInput $model
+     *
+     * @test
      */
-    public function testWillTransformModelToEntity(Team $entity, TeamInput $model): void
+    public function willTransformModelToEntity(Team $entity, TeamInput $model): void
     {
         $result = $this->transformer->transformToEntity($model);
         $this->assertEquals($entity, $result);
@@ -48,10 +44,12 @@ class TeamDataTransformerTest extends TestCase
     /**
      * @dataProvider modelProvider
      *
-     * @param Team $entity
+     * @param Team       $entity
      * @param TeamOutput $model
+     *
+     * @test
      */
-    public function testWillTransformEntityToModel(Team $entity, TeamOutput $model): void
+    public function willTransformEntityToModel(Team $entity, TeamOutput $model): void
     {
         $this->assertEquals($model, $this->transformer->transformToModel($entity));
     }

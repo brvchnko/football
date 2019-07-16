@@ -23,14 +23,15 @@ class LeagueDataTransformerTest extends TestCase
         $this->transformer = new LeagueDataTransformer();
     }
 
-
     /**
      * @dataProvider entityProvider
      *
-     * @param League $entity
+     * @param League      $entity
      * @param LeagueInput $model
+     *
+     * @test
      */
-    public function testWillTransformModelToEntity(League $entity, LeagueInput $model): void
+    public function willTransformModelToEntity(League $entity, LeagueInput $model): void
     {
         $result = $this->transformer->transformToEntity($model);
         $this->assertEquals($entity, $result);
@@ -39,10 +40,12 @@ class LeagueDataTransformerTest extends TestCase
     /**
      * @dataProvider modelProvider
      *
-     * @param League $entity
+     * @param League       $entity
      * @param LeagueOutput $model
+     *
+     * @test
      */
-    public function testWillTransformEntityToModel(League $entity, LeagueOutput $model): void
+    public function willTransformEntityToModel(League $entity, LeagueOutput $model): void
     {
         $this->assertEquals($model, $this->transformer->transformToModel($entity));
     }

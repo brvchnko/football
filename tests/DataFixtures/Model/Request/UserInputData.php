@@ -8,7 +8,6 @@ use App\Model\Request\UserInput;
 
 class UserInputData
 {
-
     public static function get(): UserInput
     {
         $model = new UserInput();

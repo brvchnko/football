@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Tests\DataFixtures\Entity;
-
 
 use App\Entity\User;
 

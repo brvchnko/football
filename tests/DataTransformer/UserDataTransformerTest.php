@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\DataTransformer;
 
-use App\DataTransformer\LeagueDataTransformer;
 use App\DataTransformer\UserDataTransformer;
-use App\Entity\League;
 use App\Entity\User;
-use App\Model\Request\LeagueInput;
 use App\Model\Request\UserInput;
-use App\Model\Response\LeagueOutput;
 use App\Model\Response\UserOutput;
-use App\Tests\DataFixtures\Entity\LeagueData;
 use App\Tests\DataFixtures\Entity\UserData;
-use App\Tests\DataFixtures\Model\Request\LeagueInputData;
 use App\Tests\DataFixtures\Model\Request\UserInputData;
-use App\Tests\DataFixtures\Model\Response\LeagueOutputData;
 use App\Tests\DataFixtures\Model\Response\UserOutputData;
 use PHPUnit\Framework\TestCase;
 
@@ -33,10 +26,12 @@ class UserDataTransformerTest extends TestCase
     /**
      * @dataProvider entityProvider
      *
-     * @param User $entity
+     * @param User      $entity
      * @param UserInput $model
+     *
+     * @test
      */
-    public function testWillTransformModelToEntity(User $entity, UserInput $model): void
+    public function willTransformModelToEntity(User $entity, UserInput $model): void
     {
         $result = $this->transformer->transformToEntity($model);
         $this->assertEquals($entity, $result);
@@ -45,10 +40,12 @@ class UserDataTransformerTest extends TestCase
     /**
      * @dataProvider modelProvider
      *
-     * @param User $entity
+     * @param User       $entity
      * @param UserOutput $model
+     *
+     * @test
      */
-    public function testWillTransformEntityToModel(User $entity, UserOutput $model): void
+    public function willTransformEntityToModel(User $entity, UserOutput $model): void
     {
         $this->assertEquals($model, $this->transformer->transformToModel($entity));
     }
