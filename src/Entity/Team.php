@@ -22,7 +22,12 @@ class Team
     private $id;
 
     /**
-     * @ORM\Column(name="strip", type="text", nullable=false)
+     * @ORM\Column(name="name", type="string", nullable=false)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(name="strip", type="string", nullable=false)
      */
     private $strip;
     /**
@@ -83,4 +88,17 @@ class Team
 
         return $this;
     }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
 }

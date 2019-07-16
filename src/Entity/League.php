@@ -26,7 +26,7 @@ class League
     /**
      * @var string
      *
-     * @ORM\Column(name="strip", type="text", nullable=false)
+     * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
 
