@@ -12,7 +12,7 @@ final class UserDataTransformer implements DataTransformerInterface
 {
     /**
      * @param UserInput $source
-     * @param User $entity
+     * @param User      $entity
      *
      * @return User
      */
@@ -38,12 +38,12 @@ final class UserDataTransformer implements DataTransformerInterface
      */
     public function transformToModel($source)
     {
-       $outputModel = new UserOutput();
+        $outputModel = new UserOutput();
 
-       $outputModel
-           ->setUsername($source->getUsername())
-           ->setEmail($source->getEmail());
+        $outputModel
+            ->setUsername($source->getUsername())
+            ->setEmail($source->getEmail());
 
-       return $outputModel;
+        return $outputModel;
     }
 }

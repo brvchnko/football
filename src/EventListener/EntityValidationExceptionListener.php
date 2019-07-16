@@ -21,7 +21,7 @@ class EntityValidationExceptionListener
 
         $errors = [];
         foreach ($exception->getViolationList() as $violation) {
-            /** @var ConstraintViolationInterface $violation */
+            /* @var ConstraintViolationInterface $violation */
             $errors[$violation->getPropertyPath()]['errors'][] = $violation->getMessage();
         }
 

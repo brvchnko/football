@@ -21,7 +21,6 @@ class TeamInput implements InputModelInterface
      */
     private $leagues = [];
 
-
     public function getName(): ?string
     {
         return $this->name;

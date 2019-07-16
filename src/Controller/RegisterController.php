@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RegisterController extends AbstractController
 {
-    /** @var UserService  */
+    /** @var UserService */
     private $service;
 
     public function __construct(UserService $service)

@@ -19,7 +19,6 @@ class UserInput implements InputModelInterface
      */
     private $password;
 
-
     public function getPassword(): ?string
     {
         return $this->password;

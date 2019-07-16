@@ -12,7 +12,7 @@ class LeagueDataTransformer implements DataTransformerInterface
 {
     /**
      * @param LeagueInput $source
-     * @param League $entity
+     * @param League      $entity
      *
      * @return League
      */

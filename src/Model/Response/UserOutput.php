@@ -15,7 +15,6 @@ class UserOutput
      */
     private $email;
 
-
     public function getEmail(): ?string
     {
         return $this->email;

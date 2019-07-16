@@ -8,9 +8,7 @@ use App\DataTransformer\TeamDataTransformer;
 use App\Factory\TeamFactory;
 use App\Model\Request\TeamInput;
 use App\Model\Response\TeamOutput;
-use App\Repository\LeagueRepository;
 use App\Repository\TeamRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class TeamService

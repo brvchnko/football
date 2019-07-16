@@ -11,7 +11,6 @@ class LeagueInput implements InputModelInterface
      */
     private $name;
 
-
     public function getName(): ?string
     {
         return $this->name;

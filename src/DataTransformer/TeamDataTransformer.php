@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\DataTransformer;
 
-use App\Entity\League;
 use App\Entity\Team;
-use App\Model\Request\LeagueInput;
 use App\Model\Request\TeamInput;
-use App\Model\Response\LeagueOutput;
 use App\Model\Response\TeamOutput;
 
 class TeamDataTransformer implements DataTransformerInterface
 {
-    /** @var LeagueDataTransformer  */
+    /** @var LeagueDataTransformer */
     private $leagueTransformer;
 
     public function __construct(LeagueDataTransformer $transformer)
@@ -23,7 +20,7 @@ class TeamDataTransformer implements DataTransformerInterface
 
     /**
      * @param TeamInput $source
-     * @param Team $entity
+     * @param Team      $entity
      *
      * @return Team
      */

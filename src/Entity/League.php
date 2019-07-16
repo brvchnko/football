@@ -84,5 +84,4 @@ class League
 
         return $this;
     }
-
 }
