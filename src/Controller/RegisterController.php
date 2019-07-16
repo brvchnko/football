@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Manager\UserManager;
 use App\Model\Request\UserInput;
+use App\Service\UserService;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,11 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RegisterController extends AbstractController
 {
-    private $manager;
+    /** @var UserService  */
+    private $service;
 
-    public function __construct(UserManager $manager)
+    public function __construct(UserService $service)
     {
-        $this->manager = $manager;
+        $this->service = $service;
     }
 
     /**
@@ -35,7 +36,7 @@ class RegisterController extends AbstractController
     public function register(UserInput $userInput, UserManagerInterface $userManager): JsonResponse
     {
         return $this->json(
-            $this->manager->create($userInput, $userManager),
+            $this->service->create($userInput, $userManager),
             JsonResponse::HTTP_CREATED
         );
     }
