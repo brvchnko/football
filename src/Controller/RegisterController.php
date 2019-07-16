@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/auth")
+ * @Route("/register")
  */
-class AuthController extends AbstractController
+class RegisterController extends AbstractController
 {
     private $manager;
 
@@ -25,7 +25,7 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @Route("/register", methods={"POST"})
+     * @Route("", methods={"POST"})
      * @ParamConverter(
      *     class="App\Model\Request\UserInput",
      *     name="userInput",

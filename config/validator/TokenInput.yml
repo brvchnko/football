@@ -1,0 +1,12 @@
+App\Model\Request\Token\TokenInput:
+    properties:
+        email:
+          - NotBlank:
+              message: "The email is required"
+          - Type: string
+          - Email:
+              message: "The email is invalid"
+        password:
+          - NotBlank:
+              message: "The password is required"
+          - Type: string
