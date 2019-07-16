@@ -18,7 +18,6 @@ class LeagueController extends AbstractController
      */
     public function create(): JsonResponse
     {
-        $test = 123;
 
         return $this->json(null);
     }
