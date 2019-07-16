@@ -48,7 +48,7 @@ class TeamService
         $teamEntity = $this->repository->find($id);
 
         if (null === $teamEntity) {
-            throw new UnprocessableEntityHttpException();
+            throw new UnprocessableEntityHttpException(sprintf('Team wit %d id was not found', $id));
         }
 
         $entity = $this->transformer->transformToEntity($input, $teamEntity);
