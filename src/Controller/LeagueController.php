@@ -41,8 +41,21 @@ class LeagueController extends AbstractController
         );
     }
 
-    public function delete()
+    /**
+     * @Route("/{id}/team", methods={"GET"})
+     */
+    public function list(int $id): JsonResponse
     {
+        return $this->json($this->service->teamList($id));
+    }
 
+    /**
+     * @Route("/{id}", methods={"DELETE"})
+     */
+    public function remove(int $id): JsonResponse
+    {
+        $this->service->remove($id);
+
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 }

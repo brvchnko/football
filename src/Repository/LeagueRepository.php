@@ -21,6 +21,12 @@ class LeagueRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
+    public function remove(League $league): void
+    {
+        $this->getEntityManager()->remove($league);
+        $this->getEntityManager()->flush();
+    }
+
     public function findAllById(array $ids): iterable
     {
         $qb = $this->createQueryBuilder('l');

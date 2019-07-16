@@ -33,7 +33,7 @@ class League
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team", mappedBy="league", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Team", mappedBy="leagues", cascade={"persist"})
      */
     private $teams;
 
