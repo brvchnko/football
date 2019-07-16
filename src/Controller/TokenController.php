@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exceptions\TokenException;
-use App\Model\Request\Token\TokenInput;
+use App\Model\Request\TokenInput;
 use App\Service\TokenService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ class TokenController extends AbstractController
      * @Route("/token", methods={"POST"})
      *
      * @ParamConverter(
-     *     class="App\Model\Request\Token\TokenInput",
+     *     class="App\Model\Request\TokenInput",
      *     name="tokenInput",
      *     options={"validate": true}
      *     )
