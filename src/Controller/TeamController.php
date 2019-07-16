@@ -51,9 +51,6 @@ class TeamController extends AbstractController
      */
     public function replace(TeamInput $teamInput, int $id): JsonResponse
     {
-        return $this->json(
-            $this->service->replace($teamInput, $id),
-            Response::HTTP_CREATED
-        );
+        return $this->json($this->service->replace($teamInput, $id));
     }
 }
