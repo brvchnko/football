@@ -16,7 +16,7 @@ final class UserDataTransformer implements DataTransformerInterface
      *
      * @return User
      */
-    public function transform($source, $entity = null)
+    public function transformToEntity($source, $entity = null)
     {
         if (null === $entity) {
             $entity = new User();
@@ -36,7 +36,7 @@ final class UserDataTransformer implements DataTransformerInterface
      *
      * @return UserOutput
      */
-    public function reverseTransform($source)
+    public function transformToModel($source)
     {
        $outputModel = new UserOutput();
 
