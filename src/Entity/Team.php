@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="team")
+ * @ORM\Table(name="team", uniqueConstraints={@ORM\UniqueConstraint(columns={"name"})})
  */
 class Team
 {
