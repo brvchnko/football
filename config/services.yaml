@@ -4,24 +4,50 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    from_email: '%env(EMAIL_FROM)%'
+    sender_name: '%env(EMAIL_SENDER_NAME)%'
+    token_life: 86400
+    token_algorithm: 'HS256'
+    cache_time_tolerance: 300
+    redis_host: '%env(REDIS_HOST)%'
+    secret: '%env(SECRET)%'
 
 services:
-    # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\ParamConverters\InputModelParamConverter:
+        arguments: ['@serializer', '@validator']
+        tags:
+            - { name: request.param_converter }
+
+    App\EventListener\EntityValidationExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception}
+
+    App\Repository\UserRepository:
+        arguments: ['@doctrine']
+
+    app.library.jwt:
+        class: Firebase\JWT\JWT
+
+    App\Util\TokenUtil:
+        arguments:
+            $jwt: '@app.library.jwt'
+            $cache: '@snc_redis.token'
+            $tokenLife: '%token_life%'
+            $algorithm: '%token_algorithm%'
+            $cacheTime: '%cache_time_tolerance%'
+            $secret: '%secret%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

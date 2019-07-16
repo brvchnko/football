@@ -5,22 +5,21 @@ volumes:
 
 services:
     mysql:
-        image: mysql:5.6
-        container_name: ${PROJECT_NAME}-mysql
-        working_dir: /football
+        image: mysql:5.7
+        container_name: f-mysql
         volumes:
           - db-data:/football
         environment:
           - MYSQL_ROOT_PASSWORD=docker_root
-          - MYSQL_DATABASE=sf4_db
-          - MYSQL_USER=sf4_user
-          - MYSQL_PASSWORD=sf4_pw
+          - MYSQL_DATABASE=football
+          - MYSQL_USER=football
+          - MYSQL_PASSWORD=football
         ports:
-          - "8306:3306"
+          - "3307:3306"
 
     webserver:
         image: nginx:alpine
-        container_name: ${PROJECT_NAME}-webserver
+        container_name: f-webserver
         working_dir: /football
         volumes:
           - .:/football
@@ -30,7 +29,7 @@ services:
 
     php-fpm:
         build: docker/php-fpm
-        container_name: ${PROJECT_NAME}-php-fpm
+        container_name: f-php-fpm
         working_dir: /football
         volumes:
           - .:/football
