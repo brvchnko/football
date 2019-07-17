@@ -9,6 +9,7 @@ use App\Security\TokenProvider;
 use App\Tests\DataFixtures\Entity\UserData;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,12 +35,7 @@ class TokenProviderTest extends TestCase
         $this->tokenProvider = new TokenProvider($this->userRepositoryMock);
     }
 
-    /**
-     * @test
-     *
-     * @expectedException \Symfony\Component\Security\Core\Exception\AuthenticationException
-     */
-    public function throw_exception_when_no_user(): void
+    public function testWillThrowAuthException(): void
     {
         $email = 'user@email.com';
         $user = null;
@@ -50,13 +46,12 @@ class TokenProviderTest extends TestCase
             ->with($email, true)
             ->willReturn($user);
 
+        $this->expectException(AuthenticationException::class);
+
         $this->tokenProvider->loadUserByUsername($email);
     }
 
-    /**
-     * @test
-     */
-    public function load_user_by_username_returns_user_if_give_email_exists(): void
+    public function testWillReturnUserIfEmailExist(): void
     {
         $email = 'user@email.com';
         $user = UserData::get();
@@ -72,10 +67,7 @@ class TokenProviderTest extends TestCase
         $this->assertSame($user, $result);
     }
 
-    /**
-     * @test
-     */
-    public function refresh_user_throws_exception_by_default(): void
+    public function testRefreshWillThrowException(): void
     {
         $user = $this->createMock(UserInterface::class);
 
@@ -86,20 +78,14 @@ class TokenProviderTest extends TestCase
         $this->tokenProvider->refreshUser($user);
     }
 
-    /**
-     * @test
-     */
-    public function supports_class_returns_false_if_parameter_is_not_user_class(): void
+    public function testWillReturnFalseIfClassIsNotUser(): void
     {
-        $result = $this->tokenProvider->supportsClass('BadClass');
+        $result = $this->tokenProvider->supportsClass('incorrect');
 
         $this->assertFalse($result);
     }
 
-    /**
-     * @test
-     */
-    public function supports_class_returns_true_if_parameter_is_user_class(): void
+    public function testSupportWillReturnTrueIfClassIsUser(): void
     {
         $result = $this->tokenProvider->supportsClass(User::class);
 
