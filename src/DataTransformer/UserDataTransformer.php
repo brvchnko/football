@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Model\Request\UserInput;
 use App\Model\Response\UserOutput;
 
-final class UserDataTransformer implements DataTransformerInterface
+class UserDataTransformer implements DataTransformerInterface
 {
     /**
      * @param UserInput $source
