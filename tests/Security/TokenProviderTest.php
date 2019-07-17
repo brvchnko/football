@@ -35,7 +35,10 @@ class TokenProviderTest extends TestCase
         $this->tokenProvider = new TokenProvider($this->userRepositoryMock);
     }
 
-    public function testWillThrowAuthException(): void
+    /**
+     * @test
+     */
+    public function willThrowAuthException(): void
     {
         $email = 'user@email.com';
         $user = null;
@@ -51,7 +54,10 @@ class TokenProviderTest extends TestCase
         $this->tokenProvider->loadUserByUsername($email);
     }
 
-    public function testWillReturnUserIfEmailExist(): void
+    /**
+     * @test
+     */
+    public function willReturnUserIfEmailExist(): void
     {
         $email = 'user@email.com';
         $user = UserData::get();
@@ -67,7 +73,10 @@ class TokenProviderTest extends TestCase
         $this->assertSame($user, $result);
     }
 
-    public function testRefreshWillThrowException(): void
+    /**
+     * @test
+     */
+    public function refreshWillThrowException(): void
     {
         $user = $this->createMock(UserInterface::class);
 
@@ -78,14 +87,20 @@ class TokenProviderTest extends TestCase
         $this->tokenProvider->refreshUser($user);
     }
 
-    public function testWillReturnFalseIfClassIsNotUser(): void
+    /**
+     * @test
+     */
+    public function willReturnFalseIfClassIsNotUser(): void
     {
         $result = $this->tokenProvider->supportsClass('incorrect');
 
         $this->assertFalse($result);
     }
 
-    public function testSupportWillReturnTrueIfClassIsUser(): void
+    /**
+     * @test
+     */
+    public function supportWillReturnTrueIfClassIsUser(): void
     {
         $result = $this->tokenProvider->supportsClass(User::class);
 

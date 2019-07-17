@@ -18,7 +18,10 @@ class UserFactoryTest extends TestCase
         $this->factory = new UserFactory();
     }
 
-    public function testWillAddProvidedRoles(): void
+    /**
+     * @test
+     */
+    public function willAddProvidedRoles(): void
     {
         $entity = UserData::get();
 
@@ -27,7 +30,10 @@ class UserFactoryTest extends TestCase
         $this->assertSame($entity->setRoles(['ROLE_TEST']), $result);
     }
 
-    public function testWillAddDefaultRoles(): void
+    /**
+     * @test
+     */
+    public function willAddDefaultRoles(): void
     {
         $entity = UserData::get();
 

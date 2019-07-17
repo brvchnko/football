@@ -64,7 +64,10 @@ class TeamServiceTest extends TestCase
         $this->sub->create($model);
     }
 
-    public function testRemoveWillThrowException(): void
+    /**
+     * @test
+     */
+    public function removeWillThrowException(): void
     {
         $id = 1;
         $model = TeamInputData::get();
@@ -81,7 +84,10 @@ class TeamServiceTest extends TestCase
         $this->sub->replace($model, $id);
     }
 
-    public function testWillRemove(): void
+    /**
+     * @test
+     */
+    public function willRemove(): void
     {
         $team = TeamData::get();
         $model = TeamInputData::get();
@@ -116,6 +122,4 @@ class TeamServiceTest extends TestCase
 
         $this->sub->replace($model, $id);
     }
-
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Tests\Service;
-
 
 use App\DataTransformer\UserDataTransformer;
 use App\Factory\UserFactory;
@@ -16,14 +14,12 @@ use PHPUnit\Framework\TestCase;
 
 class UserServiceTest extends TestCase
 {
-
     /** @var UserDataTransformer|MockObject */
     private $transformer;
     /** @var UserFactory|MockObject */
     private $factory;
     /** @var UserService */
     private $sub;
-
 
     protected function setUp()
     {
@@ -33,7 +29,10 @@ class UserServiceTest extends TestCase
         $this->sub = new UserService($this->transformer, $this->factory);
     }
 
-    public function testWillCreateUser(): void
+    /**
+     * @test
+     */
+    public function willCreateUser(): void
     {
         $input = UserInputData::get();
         $user = UserData::get();

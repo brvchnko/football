@@ -33,7 +33,10 @@ class JwtGuardAuthenticatorTest extends TestCase
         $this->request = $this->createMock(Request::class);
     }
 
-    public function testStart(): void
+    /**
+     * @test
+     */
+    public function start(): void
     {
         $response = $this->guard->start($this->request);
 
@@ -49,7 +52,7 @@ class JwtGuardAuthenticatorTest extends TestCase
      * @param Request $request
      * @param mixed   $expected
      */
-    public function testGetCredentials(Request $request, $expected): void
+    public function getCredentials(Request $request, $expected): void
     {
         $authenticator = new JwtGuardAuthenticator($this->createMock(TokenUtil::class));
 
@@ -58,7 +61,10 @@ class JwtGuardAuthenticatorTest extends TestCase
         $this->assertEquals($expected, $credentials);
     }
 
-    public function testGetUser(): void
+    /**
+     * @test
+     */
+    public function getUser(): void
     {
         $credentials = 'token';
         $tokenData = new \stdClass();
@@ -83,7 +89,10 @@ class JwtGuardAuthenticatorTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
     }
 
-    public function testGetUserWithTokenException(): void
+    /**
+     * @test
+     */
+    public function getUserWithTokenException(): void
     {
         $credentials = 'token';
         $tokenData = new \stdClass();
@@ -103,7 +112,10 @@ class JwtGuardAuthenticatorTest extends TestCase
         $this->assertNull($user);
     }
 
-    public function testGetUserWithProviderWillThrowException(): void
+    /**
+     * @test
+     */
+    public function getUserWithProviderWillThrowException(): void
     {
         $credentials = 'token';
         $tokenData = new \stdClass();
@@ -128,7 +140,10 @@ class JwtGuardAuthenticatorTest extends TestCase
         $this->assertNull($user);
     }
 
-    public function testOnSuccess(): void
+    /**
+     * @test
+     */
+    public function onSuccess(): void
     {
         $result = $this->guard->onAuthenticationSuccess(
             $this->request,
@@ -139,22 +154,31 @@ class JwtGuardAuthenticatorTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testOnFailure(): void
+    /**
+     * @test
+     */
+    public function onFailure(): void
     {
-        $response = $this->guard->onAuthenticationFailure($this->request,new AuthenticationException());
+        $response = $this->guard->onAuthenticationFailure($this->request, new AuthenticationException());
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals(401, $response->getStatusCode());
     }
 
-    public function testCheckCredentials(): void
+    /**
+     * @test
+     */
+    public function checkCredentials(): void
     {
         $result = $this->guard->checkCredentials(null, $this->createMock(UserInterface::class));
 
         $this->assertTrue($result);
     }
 
-    public function testRememberMeSupport(): void
+    /**
+     * @test
+     */
+    public function rememberMeSupport(): void
     {
         $result = $this->guard->supportsRememberMe();
 

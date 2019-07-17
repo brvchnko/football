@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-
 use App\DataTransformer\LeagueDataTransformer;
 use App\DataTransformer\TeamDataTransformer;
 use App\Repository\LeagueRepository;
@@ -37,7 +36,10 @@ class LeagueServiceTest extends TestCase
         $this->sub = new LeagueService($this->transformer, $this->repository, $this->teamTransformer);
     }
 
-    public function testWillCreateLeague(): void
+    /**
+     * @test
+     */
+    public function willCreateLeague(): void
     {
         $league = LeagueData::get();
 
@@ -61,7 +63,10 @@ class LeagueServiceTest extends TestCase
         $this->sub->create(LeagueInputData::get());
     }
 
-    public function testListWillThrowException(): void
+    /**
+     * @test
+     */
+    public function listWillThrowException(): void
     {
         $id = 1;
 
@@ -77,7 +82,10 @@ class LeagueServiceTest extends TestCase
         $this->sub->teamList($id);
     }
 
-    public function testListWillReturnListOfTeams(): void
+    /**
+     * @test
+     */
+    public function listWillReturnListOfTeams(): void
     {
         $league = LeagueData::get();
         $league->setTeams([TeamData::get()]);
@@ -98,7 +106,10 @@ class LeagueServiceTest extends TestCase
         $this->sub->teamList($id);
     }
 
-    public function testRemoveWillThrowException(): void
+    /**
+     * @test
+     */
+    public function removeWillThrowException(): void
     {
         $id = 1;
 
@@ -112,10 +123,12 @@ class LeagueServiceTest extends TestCase
         $this->expectExceptionMessage(sprintf('League wit %d id was not found', $id));
 
         $this->sub->remove($id);
-
     }
 
-    public function testWillRemove(): void
+    /**
+     * @test
+     */
+    public function willRemove(): void
     {
         $league = LeagueData::get();
         $id = 1;

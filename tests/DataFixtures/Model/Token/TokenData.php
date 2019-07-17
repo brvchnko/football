@@ -24,7 +24,6 @@ class TokenData
         $userModel->email = $user->getEmail();
         $userModel->roles = $user->getRoles();
 
-
         $dataModel->user = $userModel;
 
         return $dataModel;
