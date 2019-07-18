@@ -30,6 +30,7 @@ class Team
      * @ORM\Column(name="strip", type="string", nullable=false)
      */
     private $strip;
+
     /**
      * @var League[]|Collection
      *
