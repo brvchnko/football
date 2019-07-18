@@ -42,6 +42,3 @@ services:
       image: redis:3.2-alpine
       logging:
         driver: "json-file"
-        options:
-          max-size: "200k"
-          max-file: "10"
