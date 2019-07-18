@@ -6,38 +6,58 @@ namespace App\Factory;
 
 use App\Entity\Team;
 use App\Model\Request\TeamInput;
-use App\Repository\LeagueRepository;
+use App\Model\Response\TeamOutput;
 
 class TeamFactory
 {
-    /** @var LeagueRepository */
-    private $leagueRepository;
+    /** @var LeagueFactory */
+    private $leagueFactory;
 
-    public function __construct(LeagueRepository $leagueRepository)
+    public function __construct(LeagueFactory $leagueFactory)
     {
-        $this->leagueRepository = $leagueRepository;
+        $this->leagueFactory = $leagueFactory;
     }
 
-    public function bindNewLeagues(Team $entity, TeamInput $input): void
+    public function createModelFromEntity(Team $entity): TeamOutput
     {
-        if (empty($input->getLeagues())) {
-            return;
+        $model = new TeamOutput();
+
+        $leagues = [];
+        foreach ($entity->getLeagues() as $league) {
+            $leagues[] = $this->leagueFactory->createModelFromEntity($league);
         }
 
-        $leagues = $this->leagueRepository->findAllById($input->getLeagues());
+        $model
+            ->setId($entity->getId())
+            ->setLeagues($leagues)
+            ->setStrip($entity->getStrip())
+            ->setName($entity->getName());
+
+        return $model;
+    }
+
+    public function createEntityFromModel(TeamInput $model, Team $entity = null): Team
+    {
+        if (null === $entity) {
+            $entity = new Team();
+        }
+
+        $entity
+            ->setName($model->getName())
+            ->setStrip($model->getStrip());
+
+        return $entity;
+    }
+
+    public function bindNewLeagues(Team $entity, iterable $leagues): void
+    {
         foreach ($leagues as $league) {
             $entity->addLeague($league);
         }
     }
 
-    public function updateExistedLeagues(Team $entity, TeamInput $input): void
+    public function updateExistedLeagues(Team $entity, iterable $leagues): void
     {
-        if (empty($input->getLeagues())) {
-            return;
-        }
-
-        $leagues = $this->leagueRepository->findAllById($input->getLeagues());
-
         $entity->setLeagues($leagues);
     }
 }
