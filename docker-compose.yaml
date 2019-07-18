@@ -1,0 +1,46 @@
+version: "3.1"
+
+volumes:
+    db-data:
+
+services:
+    mysql:
+        image: mysql:5.7
+        container_name: f-mysql
+        volumes:
+          - db-data:/football
+        environment:
+          - MYSQL_ROOT_PASSWORD=docker_root
+          - MYSQL_DATABASE=football
+          - MYSQL_USER=football
+          - MYSQL_PASSWORD=football
+        ports:
+          - "3307:3306"
+
+    webserver:
+        image: nginx:alpine
+        container_name: f-webserver
+        working_dir: /football
+        volumes:
+          - .:/football
+          - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+          - "8000:80"
+
+    php-fpm:
+        build: docker/php-fpm
+        container_name: f-php-fpm
+        working_dir: /football
+        volumes:
+          - .:/football
+          - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+        environment:
+          XDEBUG_CONFIG: "remote_host=docker.for.mac.localhost"
+
+    redis:
+      image: redis:3.2-alpine
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "200k"
+          max-file: "10"

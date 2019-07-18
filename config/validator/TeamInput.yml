@@ -1,0 +1,8 @@
+App\Model\Request\TeamInput:
+    properties:
+        name:
+          - NotBlank:
+              message: "The name is required"
+        strip:
+          - NotBlank:
+              message: "The strip is required"
