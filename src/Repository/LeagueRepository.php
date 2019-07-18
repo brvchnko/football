@@ -8,7 +8,7 @@ use App\Entity\League;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-class LeagueRepository extends ServiceEntityRepository
+class LeagueRepository extends ServiceEntityRepository implements LeagueRepositoryInterface
 {
     public function __construct(ManagerRegistry $manager)
     {
