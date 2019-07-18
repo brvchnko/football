@@ -38,6 +38,7 @@ services:
           XDEBUG_CONFIG: "remote_host=docker.for.mac.localhost"
 
     redis:
+      container_name: f-redis
       image: redis:3.2-alpine
       logging:
         driver: "json-file"
