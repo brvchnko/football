@@ -4,41 +4,45 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\DataTransformer\TeamDataTransformer;
 use App\Factory\TeamFactory;
 use App\Model\Request\TeamInput;
 use App\Model\Response\TeamOutput;
+use App\Repository\LeagueRepositoryInterface;
 use App\Repository\TeamRepository;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class TeamService
 {
-    /** @var TeamDataTransformer */
-    private $transformer;
     /** @var TeamRepository */
     private $repository;
     /** @var TeamFactory */
     private $factory;
+    /** @var LeagueRepositoryInterface */
+    private $leagueRepository;
 
     public function __construct(
-        TeamDataTransformer $transformer,
         TeamRepository $repository,
-        TeamFactory $factory
+        TeamFactory $factory,
+        LeagueRepositoryInterface $leagueRepository
     ) {
-        $this->transformer = $transformer;
+        $this->leagueRepository = $leagueRepository;
         $this->factory = $factory;
         $this->repository = $repository;
     }
 
     public function create(TeamInput $input): TeamOutput
     {
-        $entity = $this->transformer->transformToEntity($input);
+        $entity = $this->factory->createEntityFromModel($input);
 
-        $this->factory->bindNewLeagues($entity, $input);
+        if (empty($input->getLeagues())) {
+            $leagues = $this->leagueRepository->findAllById($input->getLeagues());
+
+            $this->factory->bindNewLeagues($entity, $leagues);
+        }
 
         $this->repository->persist($entity);
 
-        return $this->transformer->transformToModel($entity);
+        return $this->factory->createModelFromEntity($entity);
     }
 
     public function replace(TeamInput $input, int $id): TeamOutput
@@ -49,12 +53,16 @@ class TeamService
             throw new UnprocessableEntityHttpException(sprintf('Team wit %d id was not found', $id));
         }
 
-        $entity = $this->transformer->transformToEntity($input, $teamEntity);
+        $entity = $this->factory->createEntityFromModel($input, $teamEntity);
 
-        $this->factory->updateExistedLeagues($entity, $input);
+        if (empty($input->getLeagues())) {
+            $leagues = $this->leagueRepository->findAllById($input->getLeagues());
+
+            $this->factory->updateExistedLeagues($entity, $leagues);
+        }
 
         $this->repository->flush();
 
-        return $this->transformer->transformToModel($entity);
+        return $this->factory->createModelFromEntity($entity);
     }
 }

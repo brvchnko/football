@@ -4,40 +4,40 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\DataTransformer\LeagueDataTransformer;
-use App\DataTransformer\TeamDataTransformer;
 use App\Entity\League;
+use App\Factory\LeagueFactory;
+use App\Factory\TeamFactory;
 use App\Model\Request\LeagueInput;
 use App\Model\Response\LeagueOutput;
-use App\Repository\LeagueRepository;
+use App\Repository\LeagueRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class LeagueService
 {
-    /** @var LeagueDataTransformer */
-    private $transformer;
-    /** @var TeamDataTransformer */
-    private $teamTransformer;
-    /** @var LeagueRepository */
+    /** @var LeagueFactory */
+    private $leagueFactory;
+    /** @var TeamFactory */
+    private $teamFactory;
+    /** @var LeagueRepositoryInterface */
     private $repository;
 
     public function __construct(
-        LeagueDataTransformer $transformer,
-        LeagueRepository $repository,
-        TeamDataTransformer $teamDataTransformer
+        LeagueFactory $leagueFactory,
+        LeagueRepositoryInterface $repository,
+        TeamFactory $teamFactory
     ) {
-        $this->transformer = $transformer;
+        $this->leagueFactory = $leagueFactory;
         $this->repository = $repository;
-        $this->teamTransformer = $teamDataTransformer;
+        $this->teamFactory = $teamFactory;
     }
 
     public function create(LeagueInput $input): LeagueOutput
     {
-        $entity = $this->transformer->transformToEntity($input);
+        $entity = $this->leagueFactory->createEntityFromModel($input);
 
         $this->repository->persist($entity);
 
-        return $this->transformer->transformToModel($entity);
+        return $this->leagueFactory->createModelFromEntity($entity);
     }
 
     public function teamList(int $id): array
@@ -51,7 +51,7 @@ class LeagueService
 
         $output = [];
         foreach ($entity->getTeams()->getValues() as $team) {
-            $output[] = $this->teamTransformer->transformToModel($team);
+            $output[] = $this->teamFactory->createModelFromEntity($team);
         }
 
         return $output;
