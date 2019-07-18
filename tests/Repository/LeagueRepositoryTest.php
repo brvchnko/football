@@ -17,10 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class LeagueRepositoryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function willFindMatchesById(): void
+    public function testWillFindMatchesById(): void
     {
         $league = LeagueData::get();
         $queryMock = $this->createMock(AbstractQuery::class);
@@ -53,10 +50,7 @@ class LeagueRepositoryTest extends TestCase
         $this->assertSame([$league], $repository->findAllById([1]));
     }
 
-    /**
-     * @test
-     */
-    public function willPersistEntity(): void
+    public function testWillPersistEntity(): void
     {
         $manager = $this->createMock(EntityManager::class);
         $manager
@@ -73,10 +67,7 @@ class LeagueRepositoryTest extends TestCase
         $repository->persist(LeagueData::get());
     }
 
-    /**
-     * @test
-     */
-    public function willRemovetEntity(): void
+    public function testWillRemovetEntity(): void
     {
         $manager = $this->createMock(EntityManager::class);
         $manager

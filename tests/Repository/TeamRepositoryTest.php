@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class TeamRepositoryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function willPersistEntity(): void
+    public function testWillPersistEntity(): void
     {
         $manager = $this->createMock(EntityManager::class);
         $manager
@@ -33,10 +30,7 @@ class TeamRepositoryTest extends TestCase
         $repository->persist(TeamData::get());
     }
 
-    /**
-     * @test
-     */
-    public function willFlushEntity(): void
+    public function testWillFlushEntity(): void
     {
         $manager = $this->createMock(EntityManager::class);
         $manager

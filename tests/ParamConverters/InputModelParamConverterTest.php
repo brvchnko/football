@@ -16,10 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class InputModelParamConverterTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function apply(): void
+    public function testApply(): void
     {
         $content = '{"name": "demo name"}';
 
@@ -53,10 +50,7 @@ class InputModelParamConverterTest extends TestCase
         $this->assertEquals('demo name', $model->getName());
     }
 
-    /**
-     * @test
-     */
-    public function apply_and_validate(): void
+    public function testApplyAndValidate(): void
     {
         $content = '{"name": "demo name"}';
 
@@ -103,11 +97,9 @@ class InputModelParamConverterTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @expectedException \App\Exceptions\EntityValidationException
      */
-    public function fails_validation(): void
+    public function testFailsValidation(): void
     {
         $content = '{"name": "demo name"}';
 
@@ -152,14 +144,12 @@ class InputModelParamConverterTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @dataProvider configurationDataProvider
      *
      * @param ParamConverter $configuration
      * @param bool           $expected
      */
-    public function supports(ParamConverter $configuration, bool $expected): void
+    public function testSupports(ParamConverter $configuration, bool $expected): void
     {
         $converter = new InputModelParamConverter(
             $this->createMock(SerializerInterface::class),

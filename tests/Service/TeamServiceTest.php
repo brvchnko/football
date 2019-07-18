@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\DataTransformer\TeamDataTransformer;
 use App\Factory\TeamFactory;
+use App\Repository\LeagueRepositoryInterface;
 use App\Repository\TeamRepository;
 use App\Service\TeamService;
+use App\Tests\DataFixtures\Entity\LeagueData;
 use App\Tests\DataFixtures\Entity\TeamData;
 use App\Tests\DataFixtures\Model\Request\TeamInputData;
 use App\Tests\DataFixtures\Model\Response\TeamOutputData;
@@ -17,8 +18,8 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class TeamServiceTest extends TestCase
 {
-    /** @var TeamDataTransformer|MockObject */
-    private $transformer;
+    /** @var LeagueRepositoryInterface|MockObject */
+    private $leagueRepository;
     /** @var TeamRepository|MockObject */
     private $repository;
     /** @var TeamFactory|MockObject */
@@ -28,46 +29,76 @@ class TeamServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->transformer = $this->createMock(TeamDataTransformer::class);
+        $this->leagueRepository = $this->createMock(LeagueRepositoryInterface::class);
         $this->repository = $this->createMock(TeamRepository::class);
         $this->factory = $this->createMock(TeamFactory::class);
-        $this->sub = new TeamService($this->transformer, $this->repository, $this->factory);
+        $this->sub = new TeamService($this->repository, $this->factory, $this->leagueRepository);
     }
 
-    public function willCreateTeam(): void
+    public function testCreateTeamWithoutLeagues(): void
     {
         $team = TeamData::get();
         $model = TeamInputData::get();
 
-        $this->transformer
-            ->expects($this->once())
-            ->method('transformToEntity')
-            ->with($model)
-            ->willReturn($team);
-
         $this->factory
             ->expects($this->once())
-            ->method('bindNewLeagues')
-            ->with($team, $model);
+            ->method('createEntityFromModel')
+            ->with($model)
+            ->willReturn($team);
 
         $this->repository
             ->expects($this->once())
             ->method('persist')
             ->with($team);
 
-        $this->transformer
+        $this->factory
             ->expects($this->once())
-            ->method('transformToModel')
+            ->method('createModelFromEntity')
             ->with($team)
             ->willReturn(TeamOutputData::get());
 
         $this->sub->create($model);
     }
 
-    /**
-     * @test
-     */
-    public function removeWillThrowException(): void
+    public function testCreateTeamWithLeagues(): void
+    {
+        $team = TeamData::get();
+
+        $model = TeamInputData::get();
+        $model->setLeagues([1]);
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createEntityFromModel')
+            ->with($model)
+            ->willReturn($team);
+
+        $this->leagueRepository
+            ->expects($this->once())
+            ->method('findAllById')
+            ->with($model->getLeagues())
+            ->willReturn([LeagueData::get()]);
+
+        $this->factory
+            ->expects($this->once())
+            ->method('bindNewLeagues')
+            ->with($team, [LeagueData::get()]);
+
+        $this->repository
+            ->expects($this->once())
+            ->method('persist')
+            ->with($team);
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createModelFromEntity')
+            ->with($team)
+            ->willReturn(TeamOutputData::get());
+
+        $this->sub->create($model);
+    }
+
+    public function testRemoveWillThrowException(): void
     {
         $id = 1;
         $model = TeamInputData::get();
@@ -84,10 +115,7 @@ class TeamServiceTest extends TestCase
         $this->sub->replace($model, $id);
     }
 
-    /**
-     * @test
-     */
-    public function willRemove(): void
+    public function testWillReplaceeWithoutLeagoues(): void
     {
         $team = TeamData::get();
         $model = TeamInputData::get();
@@ -99,24 +127,62 @@ class TeamServiceTest extends TestCase
             ->with($id)
             ->willReturn($team);
 
-        $this->transformer
-            ->expects($this->once())
-            ->method('transformToEntity')
-            ->with($model, $team)
-            ->willReturn($team);
-
         $this->factory
             ->expects($this->once())
-            ->method('updateExistedLeagues')
-            ->with($team, $model);
+            ->method('createEntityFromModel')
+            ->with($model, $team)
+            ->willReturn($team);
 
         $this->repository
             ->expects($this->once())
             ->method('flush');
 
-        $this->transformer
+        $this->factory
             ->expects($this->once())
-            ->method('transformToModel')
+            ->method('createModelFromEntity')
+            ->with($team)
+            ->willReturn(TeamOutputData::get());
+
+        $this->sub->replace($model, $id);
+    }
+
+    public function testWillReplaceWithLeagoues(): void
+    {
+        $team = TeamData::get();
+        $model = TeamInputData::get();
+        $model->setLeagues([1]);
+        $id = 1;
+
+        $this->repository
+            ->expects($this->once())
+            ->method('find')
+            ->with($id)
+            ->willReturn($team);
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createEntityFromModel')
+            ->with($model, $team)
+            ->willReturn($team);
+
+        $this->leagueRepository
+            ->expects($this->once())
+            ->method('findAllById')
+            ->with($model->getLeagues())
+            ->willReturn([LeagueData::get()]);
+
+        $this->factory
+            ->expects($this->once())
+            ->method('updateExistedLeagues')
+            ->with($team, [LeagueData::get()]);
+
+        $this->repository
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createModelFromEntity')
             ->with($team)
             ->willReturn(TeamOutputData::get());
 

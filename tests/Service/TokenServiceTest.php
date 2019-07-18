@@ -34,10 +34,7 @@ class TokenServiceTest extends TestCase
         $this->sub = new TokenService($this->repository, $this->encoder, $this->util);
     }
 
-    /**
-     * @test
-     */
-    public function willThrowExceptionIfUserNotFound(): void
+    public function testWillThrowExceptionIfUserNotFound(): void
     {
         $input = TokenInputData::get();
 
@@ -52,10 +49,7 @@ class TokenServiceTest extends TestCase
         $this->sub->create($input);
     }
 
-    /**
-     * @test
-     */
-    public function willThrowExceptionIfPasswordIsInvalid(): void
+    public function testWillThrowExceptionIfPasswordIsInvalid(): void
     {
         $input = TokenInputData::get();
         $user = UserData::get();
@@ -77,10 +71,7 @@ class TokenServiceTest extends TestCase
         $this->sub->create($input);
     }
 
-    /**
-     * @test
-     */
-    public function willCreateToken(): void
+    public function testWillCreateToken(): void
     {
         $input = TokenInputData::get();
         $user = UserData::get();

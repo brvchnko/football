@@ -19,10 +19,7 @@ class TokenFactoryTest extends TestCase
         $this->factory = new TokenFactory();
     }
 
-    /**
-     * @test
-     */
-    public function willCreateDataModel(): void
+    public function testWillCreateDataModel(): void
     {
         $entity = UserData::get();
         $tokenId = 'testId';

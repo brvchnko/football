@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\DataTransformer\LeagueDataTransformer;
-use App\DataTransformer\TeamDataTransformer;
+use App\Factory\LeagueFactory;
+use App\Factory\TeamFactory;
 use App\Repository\LeagueRepository;
 use App\Service\LeagueService;
 use App\Tests\DataFixtures\Entity\LeagueData;
@@ -19,10 +19,10 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class LeagueServiceTest extends TestCase
 {
-    /** @var LeagueDataTransformer|MockObject */
-    private $transformer;
-    /** @var TeamDataTransformer|MockObject */
-    private $teamTransformer;
+    /** @var LeagueFactory|MockObject */
+    private $factory;
+    /** @var TeamFactory|MockObject */
+    private $teamFactory;
     /** @var LeagueRepository|MockObject */
     private $repository;
     /** @var LeagueService */
@@ -30,22 +30,19 @@ class LeagueServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->transformer = $this->createMock(LeagueDataTransformer::class);
-        $this->teamTransformer = $this->createMock(TeamDataTransformer::class);
+        $this->factory = $this->createMock(LeagueFactory::class);
+        $this->teamFactory = $this->createMock(TeamFactory::class);
         $this->repository = $this->createMock(LeagueRepository::class);
-        $this->sub = new LeagueService($this->transformer, $this->repository, $this->teamTransformer);
+        $this->sub = new LeagueService($this->factory, $this->repository, $this->teamFactory);
     }
 
-    /**
-     * @test
-     */
-    public function willCreateLeague(): void
+    public function testWillCreateLeague(): void
     {
         $league = LeagueData::get();
 
-        $this->transformer
+        $this->factory
             ->expects($this->once())
-            ->method('transformToEntity')
+            ->method('createEntityFromModel')
             ->with(LeagueInputData::get())
             ->willReturn($league);
 
@@ -54,19 +51,16 @@ class LeagueServiceTest extends TestCase
             ->method('persist')
             ->with($league);
 
-        $this->transformer
+        $this->factory
             ->expects($this->once())
-            ->method('transformToModel')
+            ->method('createModelFromEntity')
             ->with($league)
             ->willReturn(LeagueOutputData::get());
 
         $this->sub->create(LeagueInputData::get());
     }
 
-    /**
-     * @test
-     */
-    public function listWillThrowException(): void
+    public function testListWillThrowException(): void
     {
         $id = 1;
 
@@ -82,10 +76,7 @@ class LeagueServiceTest extends TestCase
         $this->sub->teamList($id);
     }
 
-    /**
-     * @test
-     */
-    public function listWillReturnListOfTeams(): void
+    public function testListWillReturnListOfTeams(): void
     {
         $league = LeagueData::get();
         $league->setTeams([TeamData::get()]);
@@ -97,19 +88,16 @@ class LeagueServiceTest extends TestCase
             ->with($id)
             ->willReturn($league);
 
-        $this->teamTransformer
+        $this->teamFactory
             ->expects($this->once())
-            ->method('transformToModel')
+            ->method('createModelFromEntity')
             ->with(TeamData::get())
             ->willReturn(TeamOutputData::get());
 
         $this->sub->teamList($id);
     }
 
-    /**
-     * @test
-     */
-    public function removeWillThrowException(): void
+    public function testRemoveWillThrowException(): void
     {
         $id = 1;
 
@@ -125,10 +113,7 @@ class LeagueServiceTest extends TestCase
         $this->sub->remove($id);
     }
 
-    /**
-     * @test
-     */
-    public function willRemove(): void
+    public function testWillRemove(): void
     {
         $league = LeagueData::get();
         $id = 1;

@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class UserRepositoryTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function willFindByEmailAndStatus(): void
+    public function testWillFindByEmailAndStatus(): void
     {
         $user = UserData::get();
         $queryMock = $this->createMock(AbstractQuery::class);

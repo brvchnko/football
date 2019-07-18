@@ -2,7 +2,6 @@
 
 namespace App\Tests\Service;
 
-use App\DataTransformer\UserDataTransformer;
 use App\Factory\UserFactory;
 use App\Service\UserService;
 use App\Tests\DataFixtures\Entity\UserData;
@@ -14,8 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class UserServiceTest extends TestCase
 {
-    /** @var UserDataTransformer|MockObject */
-    private $transformer;
     /** @var UserFactory|MockObject */
     private $factory;
     /** @var UserService */
@@ -23,30 +20,20 @@ class UserServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->transformer = $this->createMock(UserDataTransformer::class);
         $this->factory = $this->createMock(UserFactory::class);
 
-        $this->sub = new UserService($this->transformer, $this->factory);
+        $this->sub = new UserService($this->factory);
     }
 
-    /**
-     * @test
-     */
-    public function willCreateUser(): void
+    public function testWillCreateUser(): void
     {
         $input = UserInputData::get();
         $user = UserData::get();
 
-        $this->transformer
-            ->expects($this->once())
-            ->method('transformToEntity')
-            ->with($input)
-            ->willReturn($user);
-
         $this->factory
             ->expects($this->once())
-            ->method('updateUserRoles')
-            ->with($user)
+            ->method('createEntityFromModel')
+            ->with($input)
             ->willReturn($user);
 
         $manager = $this->createMock(UserManagerInterface::class);
@@ -56,9 +43,9 @@ class UserServiceTest extends TestCase
             ->method('updateUser')
             ->with($user);
 
-        $this->transformer
+        $this->factory
             ->expects($this->once())
-            ->method('transformToModel')
+            ->method('createModelFromEntity')
             ->with($user)
             ->willReturn(UserOutputData::get());
 
