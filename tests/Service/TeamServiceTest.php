@@ -75,7 +75,7 @@ class TeamServiceTest extends TestCase
 
         $this->leagueRepository
             ->expects($this->once())
-            ->method('findAllById')
+            ->method('findByIds')
             ->with($model->getLeagues())
             ->willReturn([LeagueData::get()]);
 
@@ -167,7 +167,7 @@ class TeamServiceTest extends TestCase
 
         $this->leagueRepository
             ->expects($this->once())
-            ->method('findAllById')
+            ->method('findByIds')
             ->with($model->getLeagues())
             ->willReturn([LeagueData::get()]);
 

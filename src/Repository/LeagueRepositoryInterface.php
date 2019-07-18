@@ -13,5 +13,5 @@ interface LeagueRepositoryInterface extends ObjectRepository
 
     public function remove(League $league): void;
 
-    public function findAllById(array $ids): iterable;
+    public function findByIds(array $ids): iterable;
 }

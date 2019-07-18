@@ -35,7 +35,7 @@ class TeamService
         $entity = $this->factory->createEntityFromModel($input);
 
         if (!empty($input->getLeagues())) {
-            $leagues = $this->leagueRepository->findAllById($input->getLeagues());
+            $leagues = $this->leagueRepository->findByIds($input->getLeagues());
 
             $this->factory->bindNewLeagues($entity, $leagues);
         }
@@ -56,7 +56,7 @@ class TeamService
         $entity = $this->factory->createEntityFromModel($input, $teamEntity);
 
         if (!empty($input->getLeagues())) {
-            $leagues = $this->leagueRepository->findAllById($input->getLeagues());
+            $leagues = $this->leagueRepository->findByIds($input->getLeagues());
 
             $this->factory->updateExistedLeagues($entity, $leagues);
         }
