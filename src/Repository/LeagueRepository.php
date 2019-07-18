@@ -27,7 +27,7 @@ class LeagueRepository extends ServiceEntityRepository implements LeagueReposito
         $this->getEntityManager()->flush();
     }
 
-    public function findAllById(array $ids): iterable
+    public function findByIds(array $ids): iterable
     {
         $qb = $this->createQueryBuilder('l');
 

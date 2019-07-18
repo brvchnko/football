@@ -17,7 +17,6 @@ return PhpCsFixer\Config::create()
         'no_null_property_initialization' => true,
         'no_useless_else' => true,
         'php_unit_method_casing' => ['case' => 'camel_case'],
-        'php_unit_test_annotation' => ['style' => 'prefix'],
         'php_unit_mock' => true,
         'strict_comparison' => true
     ])

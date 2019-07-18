@@ -47,7 +47,7 @@ class LeagueRepositoryTest extends TestCase
 
         $repository = new LeagueRepository($registry);
 
-        $this->assertSame([$league], $repository->findAllById([1]));
+        $this->assertSame([$league], $repository->findByIds([1]));
     }
 
     public function testWillPersistEntity(): void

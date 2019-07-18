@@ -40,7 +40,7 @@ class TokenUtil
         $this->secret = $secret;
     }
 
-    public function create(User $user)
+    public function create(User $user): string
     {
         $time = time();
         $tokenId = sha1($time.$user->getId());
@@ -64,7 +64,7 @@ class TokenUtil
         }
     }
 
-    public function isValid(?string $token = null)
+    public function isValid(?string $token = null): stdClass
     {
         $tokenData = $this->getTokenData($token);
 
