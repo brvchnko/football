@@ -30,9 +30,13 @@ services:
         tags:
             - { name: request.param_converter }
 
+    App\EventListener\KernelExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
     App\EventListener\EntityValidationExceptionListener:
         tags:
-            - { name: kernel.event_listener, event: kernel.exception}
+            - { name: kernel.event_listener, event: kernel.exception, priority: 16 }
 
     App\Repository\UserRepository:
         arguments: ['@doctrine']
