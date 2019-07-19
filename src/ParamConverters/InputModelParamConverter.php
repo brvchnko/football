@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Class InputModelParamConverter.
- */
 final class InputModelParamConverter implements ParamConverterInterface
 {
     /**
@@ -33,37 +30,21 @@ final class InputModelParamConverter implements ParamConverterInterface
         $this->serializer = $serializer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply(Request $request, ParamConverter $configuration)
     {
         $name = $configuration->getName();
         $class = $configuration->getClass();
         $options = $this->getOptions($configuration);
 
-        $object = $this->serializer->deserialize(
-            $request->getContent(),
-            $class,
-            $request->getContentType()
-        );
+        $object = $this->serializer->deserialize($request->getContent(), $class, $request->getContentType());
 
-        if ($options['validate']) {
-            $violations = $this->validator->validate($object, null, $options['validation_groups']);
-
-            if ($violations->count() > 0) {
-                throw new EntityValidationException($violations);
-            }
-        }
+        $this->validate($options, $object);
 
         $request->attributes->set($name, $object);
 
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(ParamConverter $configuration)
     {
         if (null === $configuration->getClass()) {
@@ -75,12 +56,17 @@ final class InputModelParamConverter implements ParamConverterInterface
 
     private function getOptions(ParamConverter $configuration): array
     {
-        return array_replace(
-            [
-                'validate' => false,
-                'validation_groups' => ['Default'],
-            ],
-            $configuration->getOptions()
-        );
+        return array_replace(['validate' => false], $configuration->getOptions());
+    }
+
+    private function validate(array $options, $object): void
+    {
+        if ($options['validate']) {
+            $violations = $this->validator->validate($object, null);
+
+            if ($violations->count() > 0) {
+                throw new EntityValidationException($violations);
+            }
+        }
     }
 }

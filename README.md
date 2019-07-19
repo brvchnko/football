@@ -18,6 +18,7 @@ composer install
 
 use this command to prepend the database for work
 ```
+bin/console doctrine:migration:migrate
 bin/console doctrine:fixtures:load
 ``` 
 
